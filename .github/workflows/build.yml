@@ -1,0 +1,44 @@
+name: Debug Build (Artifacts)
+
+# Startet bei JEDER Änderung (keine Tags nötig)
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: 1. Code auschecken
+      uses: actions/checkout@v4
+
+    - name: 2. Python einrichten
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: 3. Bibliotheken installieren
+      run: |
+        pip install -r requirements.txt
+
+    - name: 4. Check: Liegen alle Dateien hier?
+      run: |
+        echo "Zeige Inhalt des Hauptordners:"
+        dir
+
+    - name: 5. EXE bauen (Vereinfacht)
+      # Wir lassen --icon und --noconsole erst mal weg, um Fehler zu finden
+      run: |
+        pyinstaller --onefile --name "TEST-BUILD" --collect-all customtkinter main.py
+
+    - name: 6. Check: Wurde der dist Ordner erstellt?
+      run: |
+        echo "Zeige Inhalt von dist:"
+        dir dist
+
+    - name: 7. Datei als Artifact hochladen
+      uses: actions/upload-artifact@v4
+      with:
+        name: Meine-Fertige-EXE
+        path: dist/*.exe
+        if-no-files-found: error
