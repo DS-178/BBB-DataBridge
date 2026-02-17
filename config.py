@@ -1,7 +1,7 @@
 class AppConfig:
     # ACHTUNG: Hier vorne müssen 4 Leerzeichen sein!
-    APP_NAME = "Bremer Baumwollbörse – Data Bridge"
-    VERSION = "7.0 Final"
+    APP_NAME = "BBB – Data Bridge"
+    VERSION = "8.0 Final"
 
     ZIEL_SPALTEN = [
         'Order code',
