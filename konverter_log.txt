@@ -1,0 +1,42 @@
+[2026-02-09 13:57:40] Start Verarbeitung: C:/Users/d.schmidt/Downloads/conference26_checkin_Bremen Cotton.csv
+[2026-02-09 13:57:40] WARNUNG: 12 doppelte Bestellnummern gefunden!
+[2026-02-09 13:57:40] Bericht:
+Datensätze Input: 133 -> Output: 133
+WARNUNG: 12 doppelte Bestellnummern gefunden!
+[2026-02-09 14:00:16] Start Verarbeitung: C:/Users/d.schmidt/Downloads/conference26_checkin_Bremen Cotton.csv
+[2026-02-09 14:00:16] WARNUNG: 12 doppelte Bestellnummern gefunden!
+[2026-02-09 14:00:16] Bericht:
+Datensätze Input: 133 -> Output: 133
+WARNUNG: 12 doppelte Bestellnummern gefunden!
+Gutscheine: 133 vorhanden, 0 leer.
+[2026-02-09 14:00:16] ERROR: [Errno 13] Permission denied: 'C:/Users/d.schmidt/Downloads/conference26_checkin_Bremen Cotton_DATACOOL_SAFE.xlsx'
+[2026-02-09 14:00:52] Start Verarbeitung: C:/Users/d.schmidt/Downloads/conference26_checkin_Bremen Cotton.csv
+[2026-02-09 14:00:52] WARNUNG: 12 doppelte Bestellnummern gefunden!
+[2026-02-09 14:00:52] Bericht:
+Datensätze Input: 133 -> Output: 133
+WARNUNG: 12 doppelte Bestellnummern gefunden!
+Gutscheine: 133 vorhanden, 0 leer.
+[2026-02-09 14:01:35] Start Verarbeitung: C:/Users/d.schmidt/Downloads/conference26_checkin_Bremen Cotton.csv
+[2026-02-09 14:01:35] WARNUNG: 12 doppelte Bestellnummern gefunden!
+[2026-02-09 14:01:35] Bericht:
+Datensätze Input: 133 -> Output: 133
+WARNUNG: 12 doppelte Bestellnummern gefunden!
+Gutscheine: 133 vorhanden, 0 leer.
+[2026-02-09 14:09:21] Start: C:/Users/d.schmidt/Downloads/conference26_checkin_Bremen Cotton.csv
+[2026-02-09 14:09:21] WARNUNG: 12 doppelte Bestellnummern!
+[2026-02-09 14:09:21] Bericht:
+Zeilen: 133 -> 133
+WARNUNG: 12 doppelte Bestellnummern!
+Gutscheine: 133 genutzt (Rest leer).
+[2026-02-09 14:14:22] Start: C:/Users/d.schmidt/Downloads/conference26_checkin_Bremen Cotton.csv
+[2026-02-09 14:14:22] CRITICAL ERROR: 'DataFrame' object has no attribute 'applymap'
+[2026-02-09 14:16:50] Start: C:/Users/d.schmidt/Downloads/conference26_checkin_Bremen Cotton.csv
+[2026-02-09 14:16:50] CRITICAL ERROR: 'DataFrame' object has no attribute 'applymap'
+[2026-02-09 14:20:44] Start: C:/Users/d.schmidt/Downloads/conference26_checkin_Bremen Cotton.csv
+[2026-02-09 14:20:44] WARNUNG: 12 doppelte Bestellnummern!
+[2026-02-09 14:20:44] WARNUNG: Spalte 'Voucher code' scheint komplett leer zu sein!
+[2026-02-09 14:20:44] Bericht:
+Zeilen: 133 -> 133
+WARNUNG: 12 doppelte Bestellnummern!
+Gutscheine: 0 genutzt.
+WARNUNG: Spalte 'Voucher code' scheint komplett leer zu sein!
