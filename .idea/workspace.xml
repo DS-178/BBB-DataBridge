@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5332846e-af5a-493e-bae4-058bfea5f045" name="Changes" comment="Initial upload of the Pretix to Datacool converter application.&#10;&#10;Features included:&#10;- Modular architecture (MVC pattern with config, logic, gui).&#10;- Modern GUI using CustomTkinter with animations and dark mode support.&#10;- Smart data cleaning: City names (regex), Name casing, and Country code translation via pycountry.&#10;- Excel Export: Automated formatting, column mapping, and empty cell highlighting.&#10;- Status Filtering: Option to filter by payment status (Paid/Open)." />
+    <list default="true" id="5332846e-af5a-493e-bae4-058bfea5f045" name="Changes" comment="Initial upload of the Pretix to Datacool converter application.&#10;&#10;Features included:&#10;- Modular architecture (MVC pattern with config, logic, gui).&#10;- Modern GUI using CustomTkinter with animations and dark mode support.&#10;- Smart data cleaning: City names (regex), Name casing, and Country code translation via pycountry.&#10;- Excel Export: Automated formatting, column mapping, and empty cell highlighting.&#10;- Status Filtering: Option to filter by payment status (Paid/Open).">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -89,7 +91,7 @@
       <option name="presentableId" value="Default" />
       <updated>1770636077437</updated>
       <workItem from="1770636078473" duration="20334000" />
-      <workItem from="1771320405393" duration="1306000" />
+      <workItem from="1771320405393" duration="2028000" />
     </task>
     <task id="LOCAL-00001" summary="Initial upload of the Pretix to Datacool converter application.&#10;&#10;Features included:&#10;- Modular architecture (MVC pattern with config, logic, gui).&#10;- Modern GUI using CustomTkinter with animations and dark mode support.&#10;- Smart data cleaning: City names (regex), Name casing, and Country code translation via pycountry.&#10;- Excel Export: Automated formatting, column mapping, and empty cell highlighting.&#10;- Status Filtering: Option to filter by payment status (Paid/Open).">
       <option name="closed" value="true" />
