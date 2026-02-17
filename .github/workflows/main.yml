@@ -1,0 +1,42 @@
+name: Build & Release EXE
+
+# Der Workflow startet NUR, wenn du einen Tag pusht (z.B. "v1.0")
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Code auschecken
+      uses: actions/checkout@v4
+
+    - name: Python einrichten
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Bibliotheken installieren
+      run: |
+        pip install -r requirements.txt
+
+    - name: EXE bauen (PyInstaller)
+      # Hier steht dein Befehl, genau wie auf deinem PC
+      run: |
+        pyinstaller --noconsole --onefile --icon="logo.ico" --name "BBB-Export-Tool" --collect-all customtkinter main.py
+
+    - name: Release erstellen & Datei hochladen
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        # ÄNDERUNG: Wir nutzen *.exe statt eines festen Namens
+        files: dist/*.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
