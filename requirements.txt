@@ -4,3 +4,5 @@ openpyxl
 pycountry
 Pillow
 pyinstaller
+requests
+packaging
