@@ -24,7 +24,7 @@ except ImportError:
         def run(self, *args, **kwargs): time.sleep(2)
 
 # --- KONFIGURATION ---
-CURRENT_VERSION = "v1.0"  # WICHTIG: Hier bei jedem Release hochzählen!
+CURRENT_VERSION = "v1.4"  # WICHTIG: Hier bei jedem Release hochzählen!
 REPO_URL = "https://api.github.com/repos/DS-178/BBB-DataBridge/releases/latest"
 
 class MainWindow(ctk.CTk):
