@@ -1,35 +1,64 @@
-name: Debug Build
+name: Build Windows & Linux
 
-on: [push]
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
 
 jobs:
   build:
-    runs-on: windows-latest
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # Hier definieren wir die Systeme: Windows UND Ubuntu (Linux)
+        os: [windows-latest, ubuntu-latest]
 
     steps:
-    - name: Checkout
+    - name: Code auschecken
       uses: actions/checkout@v4
 
-    - name: Setup Python
+    - name: Python einrichten
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
         cache: 'pip'
 
-    - name: Install Dependencies
-      run: pip install -r requirements.txt
+    - name: Abhängigkeiten installieren
+      run: |
+        pip install -r requirements.txt
+        pip install Pillow
 
-    - name: Show Files (Debug)
-      run: dir
+    # --- Windows Build ---
+    - name: Build Windows
+      if: runner.os == 'Windows'
+      run: |
+        python -m PyInstaller --noconsole --onefile --clean --icon="logo.ico" --name "BBB-Export-Tool" --collect-all customtkinter main.py
 
-    - name: Build EXE
-      run: pyinstaller --onefile --name "TEST-BUILD" --collect-all customtkinter main.py
+    # --- Linux Build ---
+    - name: Build Linux
+      if: runner.os == 'Linux'
+      # Auf Linux gibt es keine .ico Unterstützung im Build-Prozess wie bei Windows,
+      # und wir brauchen kein --noconsole zwingend, aber es ist sauberer.
+      run: |
+        python -m PyInstaller --noconsole --onefile --clean --name "BBB-Export-Tool_Linux" --collect-all customtkinter main.py
 
-    - name: Show Output (Debug)
-      run: dir dist
-
+    # --- Upload Artifacts (Temporär) ---
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: Finished-EXE
-        path: dist/*.exe
+        name: App-${{ matrix.os }}
+        path: dist/*
+
+    # --- Release erstellen (Nur wenn beide fertig sind) ---
+    - name: Release Upload
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        # Lädt alles hoch, was im dist Ordner ist (exe und linux binary)
+        files: dist/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

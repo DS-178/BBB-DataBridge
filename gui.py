@@ -1,4 +1,7 @@
 import os
+import sys
+import subprocess
+import platform
 import json
 import datetime
 import threading
@@ -208,8 +211,15 @@ class MainWindow(ctk.CTk):
 
     def open_excel(self):
         if self.final_output_path:
-            try: os.startfile(self.final_output_path)
-            except: pass
+            try:
+                if sys.platform == "win32":
+                    os.startfile(self.final_output_path)
+                else:
+                    # Linux und macOS nutzen andere Befehle
+                    opener = "open" if sys.platform == "darwin" else "xdg-open"
+                    subprocess.call([opener, self.final_output_path])
+            except Exception as e:
+                print(f"Fehler beim Öffnen: {e}")
 
 if __name__ == "__main__":
     app = MainWindow()
