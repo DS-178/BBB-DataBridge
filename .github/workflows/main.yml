@@ -1,42 +1,121 @@
-name: Build & Release EXE
+name: 🚀 Create Release (Auto-Tag)
 
-# Der Workflow startet NUR, wenn du einen Tag pusht (z.B. "v1.0")
+# Dieser Workflow wird MANUELL gestartet (per Klick auf GitHub)
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Neue Version (z.B. v1.1)'
+        required: true
+        default: 'v1.1'
 
 permissions:
   contents: write
 
 jobs:
-  build:
-    runs-on: windows-latest
-
+  # 1. Tag erstellen & Code vorbereiten
+  tag-and-prepare:
+    runs-on: ubuntu-latest
     steps:
-    - name: Code auschecken
-      uses: actions/checkout@v4
+      - name: Code auschecken
+        uses: actions/checkout@v4
 
-    - name: Python einrichten
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        cache: 'pip'
+      - name: Git konfigurieren
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
 
-    - name: Bibliotheken installieren
-      run: |
-        pip install -r requirements.txt
+      - name: Tag erstellen und pushen
+        run: |
+          git tag ${{ inputs.version }}
+          git push origin ${{ inputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: EXE bauen (PyInstaller)
-      # Hier steht dein Befehl, genau wie auf deinem PC
-      run: |
-        pyinstaller --noconsole --onefile --icon="logo.ico" --name "BBB-Export-Tool" --collect-all customtkinter main.py
+  # 2. Windows Build
+  build-windows:
+    needs: tag-and-prepare
+    runs-on: windows-latest
+    steps:
+      - name: Code auschecken (neuer Tag)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.version }}
 
-    - name: Release erstellen & Datei hochladen
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        # ÄNDERUNG: Wir nutzen *.exe statt eines festen Namens
-        files: dist/*.exe
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Abhängigkeiten installieren
+        run: |
+          pip install -r requirements.txt
+          pip install Pillow
+
+      - name: EXE bauen (Windows)
+        run: |
+          python -m PyInstaller --noconsole --onefile --clean --icon="logo.ico" --name "BBB-Export-Tool" --collect-all customtkinter main.py
+
+      - name: Artifact hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-exe
+          path: dist/*.exe
+
+  # 3. Linux Build
+  build-linux:
+    needs: tag-and-prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code auschecken (neuer Tag)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.version }}
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Abhängigkeiten installieren
+        run: |
+          pip install -r requirements.txt
+          pip install Pillow
+
+      - name: Binary bauen (Linux)
+        run: |
+          python -m PyInstaller --noconsole --onefile --clean --name "BBB-Export-Tool_Linux" --collect-all customtkinter main.py
+
+      - name: Artifact hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-bin
+          path: dist/BBB-Export-Tool_Linux
+
+  # 4. Release erstellen
+  create-release:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Artifacts herunterladen
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Dateien verschieben (Vorbereitung)
+        run: |
+          mkdir release_files
+          mv artifacts/windows-exe/*.exe release_files/
+          mv artifacts/linux-bin/* release_files/
+
+      - name: Release veröffentlichen
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ inputs.version }}
+          name: Release ${{ inputs.version }}
+          files: release_files/*
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
