@@ -8,7 +8,7 @@ import threading
 import time
 import customtkinter as ctk
 from tkinter import filedialog, messagebox
-from PIL import Image
+from PIL import Image, ImageTk
 
 from config import AppConfig
 from logic import DataConverter
@@ -22,7 +22,18 @@ class MainWindow(ctk.CTk):
         ctk.set_appearance_mode("System")
         ctk.set_default_color_theme("blue")
 
-        if os.path.exists("logo.ico"): self.iconbitmap("logo.ico")
+        # Cross-Platform Icon Loading (Safe Mode)
+        if os.path.exists("logo.ico"):
+            try:
+                icon_img = Image.open("logo.ico")
+
+                #WICHTIG: Auf eine sichere Größe verkleinern (z.B. 64x64)
+                # Das verhindert den "BadLength"-Fehler unter Linux
+                icon_img = icon_img.resize((64, 64), Image.Resampling.LANCZOS)
+
+                self.wm_iconphoto(True, ImageTk.PhotoImage(icon_img))
+            except Exception as e:
+                print(f"Warnung: Icon konnte nicht geladen werden: {e}")
 
         self.input_filepath = None
         self.final_output_path = None
